@@ -1,0 +1,43 @@
+# Draft MCP configuration for Telegram Operations Manager.
+# This is a planning artifact, not an activated production config.
+
+project = "telegram-operations-manager"
+phase = "planning"
+activate_mcp = false
+
+[[mcp_server]]
+name = "docs"
+enabled = false
+required_phase = "implementation-planning"
+priority = "high"
+needed_when = "When framework, provider, or Telegram integration docs must be verified."
+why = "Supports accurate implementation work with official documentation and lowers invention risk."
+
+[[mcp_server]]
+name = "browser-playwright"
+enabled = false
+required_phase = "frontend-or-e2e-validation"
+priority = "medium"
+needed_when = "When UI behavior, review flows, or end-to-end verification requires browser inspection."
+why = "Useful later for admin UX and publishing workflow validation."
+
+[[mcp_server]]
+name = "github"
+enabled = false
+required_phase = "team-delivery"
+priority = "medium"
+needed_when = "When issues, pull requests, milestones, or cross-repo coordination become part of execution."
+why = "Supports delivery workflow once the repo is run like an active product project."
+
+[[mcp_server]]
+name = "database"
+enabled = false
+required_phase = "post-schema-implementation"
+priority = "low"
+needed_when = "Only after a real schema and persistent environment exist."
+why = "Useful for schema inspection and debugging, but premature in the current planning phase."
+
+[policy]
+store_secrets_in_repo = false
+enable_only_needed_servers = true
+notes = "Docs MCP is the first recommended activation. Others should remain disabled until the product phase justifies them."
