@@ -80,3 +80,4 @@ If two docs disagree, follow `docs/delivery/decision-log.md`, then `docs/specifi
 - Prefer tightening and reusing existing docs over creating new ones.
 - If a section can live inside an existing canonical doc, keep it there instead of creating a new file.
 - End each major session with updated docs, unresolved questions, and the next best prompt.
+- If new files was added, need to track them with `git add`.
