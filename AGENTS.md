@@ -1,35 +1,82 @@
 # AGENTS.md
 
 ## Purpose
-This repository is a planning-first operating system for building the Telegram Operations Manager for the "Ukrainian Investor" channel. Until a future task explicitly requests implementation, this repo is documentation-only.
 
-## Core Rules
-- Read `README.md`, then `PLANS.md`, before starting any major task.
-- Treat `docs/architecture/*` as architectural truth, `docs/product/*` as product truth, `docs/delivery/*` as execution truth, and `docs/codex/*` as Codex operating guidance.
-- Do not write product code, tests, migrations, CI, Docker, or executable scripts unless the task explicitly asks for implementation.
-- Do not invent APIs, schemas, workflows, or integrations when repository documentation or official documentation exists.
-- Record durable product or architecture decisions in `docs/delivery/decision-log.md`.
-- Keep the MVP Telegram-only, internal-first, source-first, and human-in-the-loop.
-- Default to conservative editorial policy: no explicit buy/sell signals by default, no unreviewed high-risk publishing, and no autopilot by default.
+This is the operating contract for Codex in this repository. Follow it before changing docs, proposing implementation, or writing any code.
 
-## Planning Workflow
-- For any task larger than a small doc edit, create or update a formal plan using `PLANS.md`.
-- Before implementation, verify the relevant product, architecture, delivery, and Codex docs are aligned.
-- If the task changes scope, assumptions, or architecture, update the affected docs before or alongside the work.
+## Repository Mode
 
-## Subagent Use
-- Spawn subagents for work that crosses product, architecture, analytics, safety, editorial workflow, or Codex operating-model boundaries.
-- Use concise handoffs: decisions, assumptions, open questions, and recommended document updates.
-- Consolidate subagent output into repository docs; do not leave durable guidance only in chat.
+- Current mode: planning-first, implementation-ready, documentation-led.
+- Default assumption: no product code should be written unless a future task explicitly requests implementation.
+- Current MVP boundary: one owner-editor, one Telegram destination channel, moderation-first workflow, source-first architecture.
 
-## Repository Truth Map
-- Product direction: `docs/product/*`
-- System design: `docs/architecture/*`
-- Delivery planning: `docs/delivery/*`
-- Codex operating model: `docs/codex/*`
-- Future reusable skills: `.codex/skills/*`
+## Mandatory Read Order
 
-## Decision Discipline
-- Add new durable decisions to `docs/delivery/decision-log.md`.
-- Reference superseded decisions instead of silently rewriting history.
-- If implementation starts later, every significant code task must point back to a plan, a decision, or a source document.
+Before any major task, read in this order:
+1. `README.md`
+2. `AGENTS.md`
+3. `PLANS.md`
+4. `docs/delivery/decision-log.md`
+5. `docs/specification.md`
+6. `docs/delivery/execution.md`
+
+## Truth Map And Ownership
+
+- `docs/delivery/decision-log.md`: durable decisions
+  Primary owner: Codex Workflow Manager with founder review
+- `docs/specification.md`: product and architecture truth
+  Primary owners: Product Strategist and Solution Architect
+- `docs/delivery/execution.md`: workstreams, phases, milestones, risks, gates, and active implementation sequence
+  Primary owner: Codex Workflow Manager with Release Planner support
+- `docs/research/*`: non-canonical research context
+  Primary owner: session author
+
+If two docs disagree, follow `docs/delivery/decision-log.md`, then `docs/specification.md`, then `docs/delivery/execution.md`, and update the conflicting doc.
+
+## Non-Negotiable Rules
+
+- Do not write backend code, frontend code, tests, migrations, Docker, CI, or scripts unless a future task explicitly asks for implementation.
+- Do not invent APIs, schemas, integrations, or workflows when repository docs or official docs already define them.
+- Keep the MVP internal-first, Telegram-only, moderation-first, and source-first unless the decision log changes.
+- No explicit buy or sell signals by default.
+- Every durable product, architecture, workflow, or repo-operation decision must be recorded in `docs/delivery/decision-log.md`.
+- Every non-trivial task must link back to the relevant workstreams and canonical docs.
+- Prefer fewer, denser canonical docs over scaffolding, catalogs, or role-play layers that duplicate the same truth.
+
+## Planning-First Execution
+
+- Use a formal plan for any task that is cross-domain, multi-step, risky, or likely to take more than one focused session.
+- Before implementation, propose the work in plan form first: objective, affected workstreams, affected docs, dependencies, acceptance criteria, risks, and validation approach.
+- If documentation is missing or contradictory, fix the docs before writing code.
+
+## Subagent Policy
+
+- Use subagents for large or specialist work that spans product, architecture, editorial workflow, LLM behavior, analytics, safety, or repo operating rules.
+- Avoid subagents for small single-domain edits, straightforward repo inspection, or tasks where the next step is blocked on one answer that is faster to resolve locally.
+- When using subagents, give them only the scope they need and require a short handoff with: summary, decisions, assumptions, open questions, impacted docs, and recommended next step.
+- Consolidate subagent output into repository docs. Do not leave durable guidance only in chat.
+
+## Repo Operations Policy
+
+- Repo-local `.codex/agents/*` is allowed for operational role definitions. Those files are not canonical truth and must point back to the canonical docs.
+- Repo-local `.codex/skills/*` is allowed only when a task needs reusable leverage beyond canonical docs. Keep those skills narrow, repository-specific, and non-duplicative.
+- Use MCP only when the current phase needs it.
+- Prefer official documentation and repository docs first.
+- Do not assume any MCP server is installed or configured unless verified.
+- If an MCP server is unavailable, fall back to local docs and normal inspection, then note the gap.
+- Do not put secrets, tokens, or environment-specific credentials into repository files.
+- Keep `.codex/config.toml` as draft policy unless the repo explicitly enters a phase that needs real MCP activation.
+
+## Implementation Gate
+
+- A future request for coding does not bypass planning.
+- Before coding, confirm the relevant plan exists, the canonical docs are aligned, the required quality gates are known, and any unresolved architectural questions are explicitly listed.
+- If the task is exploratory, stay in design mode until the user explicitly wants implementation to begin.
+
+## Change Discipline
+
+- Update the smallest set of docs that restores consistency.
+- Normalize terminology instead of adding competing terms.
+- Prefer tightening and reusing existing docs over creating new ones.
+- If a section can live inside an existing canonical doc, keep it there instead of creating a new file.
+- End each major session with updated docs, unresolved questions, and the next best prompt.

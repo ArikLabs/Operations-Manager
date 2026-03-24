@@ -1,43 +1,63 @@
-# Draft MCP configuration for Telegram Operations Manager.
-# This is a planning artifact, not an activated production config.
+# Draft MCP configuration plan for Telegram Operations Manager.
+# Planning artifact only. This file does not assert that any server is installed.
 
 project = "telegram-operations-manager"
 phase = "planning"
 activate_mcp = false
 
+[policy]
+store_secrets_in_repo = false
+enable_only_needed_servers = true
+assume_servers_exist = false
+fallback_to_repo_docs = true
+notes = "Use Docs MCP first when implementation planning needs verified external docs. Keep all other servers disabled until the relevant phase begins."
+
 [[mcp_server]]
 name = "docs"
 enabled = false
-required_phase = "implementation-planning"
+rollout = "first"
 priority = "high"
-needed_when = "When framework, provider, or Telegram integration docs must be verified."
-why = "Supports accurate implementation work with official documentation and lowers invention risk."
+needed_when = "When framework, provider, or Telegram integration docs must be verified during implementation planning or coding."
+why = "Reduces invention risk and supports accurate implementation work with official documentation."
+risks = "May cause drift if external docs are treated as product truth instead of repo truth."
+fallback = "Use local repo docs and normal inspection. Browse only when current official docs are required."
 
 [[mcp_server]]
 name = "browser-playwright"
 enabled = false
-required_phase = "frontend-or-e2e-validation"
+rollout = "later"
 priority = "medium"
-needed_when = "When UI behavior, review flows, or end-to-end verification requires browser inspection."
-why = "Useful later for admin UX and publishing workflow validation."
+needed_when = "When frontend flows or end-to-end behavior must be inspected in a browser."
+why = "Useful after a real UI exists and review or publish flows need validation."
+risks = "Can waste time before a UI exists or create false confidence with incomplete environments."
+fallback = "Rely on documented workflow expectations and manual reasoning until a UI exists."
 
 [[mcp_server]]
 name = "github"
 enabled = false
-required_phase = "team-delivery"
+rollout = "later"
 priority = "medium"
-needed_when = "When issues, pull requests, milestones, or cross-repo coordination become part of execution."
-why = "Supports delivery workflow once the repo is run like an active product project."
+needed_when = "When issues, milestones, or pull requests become part of delivery."
+why = "Helps coordinate implementation work once the repo is managed as an active product project."
+risks = "Can shift attention from repo truth to issue state or stale project metadata."
+fallback = "Use local docs, plans, and manual summaries for coordination."
 
 [[mcp_server]]
-name = "database"
+name = "postgresql"
 enabled = false
-required_phase = "post-schema-implementation"
+rollout = "later"
 priority = "low"
-needed_when = "Only after a real schema and persistent environment exist."
-why = "Useful for schema inspection and debugging, but premature in the current planning phase."
+needed_when = "Only after schema implementation and a real database environment exist."
+why = "Useful for schema inspection, query support, and debugging real persistence behavior."
+risks = "Can create dependence on environment-specific data or hide schema drift from docs."
+fallback = "Use schema docs, plans, and code inspection until a real database exists."
 
-[policy]
-store_secrets_in_repo = false
-enable_only_needed_servers = true
-notes = "Docs MCP is the first recommended activation. Others should remain disabled until the product phase justifies them."
+[[mcp_server]]
+name = "internal-domain"
+enabled = false
+rollout = "optional_future"
+priority = "low"
+needed_when = "Only if internal source catalogs, rubric rules, or editorial policy outgrow markdown docs."
+why = "Could centralize domain reference material later if the repo alone becomes insufficient."
+risks = "Can duplicate truth outside version control and reduce transparency."
+fallback = "Keep domain truth in markdown docs inside the repo."

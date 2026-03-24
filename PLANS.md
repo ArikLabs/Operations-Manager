@@ -1,56 +1,97 @@
 # PLANS.md
 
-## What A Plan Is
-A plan is the execution contract for non-trivial work in this repository. It links product intent, architecture constraints, delivery sequencing, and validation into one working document or session update.
+## Purpose
 
-## When A Formal Plan Is Required
+This document defines how execution plans work in this repository. A plan is the working contract between product intent, architecture truth, delivery sequencing, and implementation or documentation work.
+
+## What Counts As A Formal Plan
+
+A formal plan is required when success depends on explicit sequencing rather than ad hoc execution. A formal plan may live in session updates, in `docs/delivery/execution.md`, or in a separate repo doc when it is active and large enough to justify its own file.
+
+## When A Plan Is Mandatory
+
 Create or update a formal plan when a task:
 - touches more than one workstream
-- changes architecture, data flow, or editorial workflow
-- introduces or changes external integrations
-- affects analytics, safety, or compliance posture
-- requires multiple sessions or subagents
-- moves the repo from planning into implementation
+- changes scope, architecture, workflow states, analytics definitions, or safety posture
+- adds or changes an external integration
+- introduces implementation work or modifies existing implementation
+- requires more than one focused session
+- depends on specialist review or subagent input
+- has non-trivial failure risk or rollback implications
 
-## Plan Sections
-Every formal plan should include:
+## Required Sections
+
+Every formal plan must include:
 1. Objective
-2. Background and source documents consulted
-3. In-scope work
-4. Out-of-scope work
-5. Assumptions and constraints
-6. Workstreams
-7. Ordered tasks
-8. Risks and mitigations
-9. Validation or acceptance criteria
-10. Decision updates required
+2. Why now
+3. Source documents consulted
+4. In scope
+5. Out of scope
+6. Assumptions and constraints
+7. Workstreams affected
+8. Dependencies
+9. Ordered tasks
+10. Risks and mitigations
+11. Acceptance criteria
+12. Validation approach
+13. Decision-log updates required
 
-## Acceptance Criteria For A Good Plan
-A plan is acceptable when it:
-- maps clearly to a product outcome or delivery milestone
-- names the relevant docs that define truth
-- breaks work into discrete workstreams with clear boundaries
-- identifies dependencies and unknowns early
-- defines what "done" means in observable terms
-- is updateable during execution without rewriting the entire plan
+## Default Workstream Taxonomy
 
-## Workstream Breakdown Rules
-Use these default workstreams unless a task needs a tighter split:
-- Product and scope
-- Domain and architecture
-- Editorial workflow and LLM layer
-- Data and analytics
-- Safety and policy
-- Delivery and rollout
-- Implementation tasks, once implementation is explicitly authorized
+Use the names from `docs/delivery/execution.md` unless there is a strong reason to split further:
+- Product and Scope
+- Source and Event Intelligence
+- Editorial Workflow and LLM Layer
+- Publishing and Operations
+- Data and Analytics
+- Safety and Policy
+- Platform Evolution
 
-## Updating Plans During Execution
-- Update status when a workstream begins, changes, or completes.
-- Record assumption changes immediately.
-- If a plan is no longer valid, replace it explicitly and explain why.
+## Acceptance Criteria Rules
+
+Acceptance criteria must be observable and specific. Good criteria:
+- describe user-visible or operator-visible outcomes
+- name the documents, interfaces, states, or behaviors affected
+- define what must be true for the work to be considered complete
+- include validation evidence when applicable
+
+Weak criteria such as "looks good" or "is implemented" are not acceptable.
+
+## Dependencies And Risks
+
+- List upstream dependencies before execution starts.
+- Separate blocking dependencies from desirable inputs.
+- Name the highest-risk assumption explicitly.
+- If risk is material, define the check that will prove or disprove it early.
+
+## Status Tracking
+
+Each plan should track status for major tasks or workstreams using:
+- `not_started`
+- `in_progress`
+- `blocked`
+- `completed`
+
+Only one major task or workstream should be `in_progress` at a time unless parallel work is intentional and independent.
+
+## Updating A Plan During Execution
+
+- Update the plan when scope changes, assumptions fail, or a dependency becomes blocking.
+- Do not silently drift from the plan.
+- If a plan becomes invalid, replace it explicitly and state why.
 - Reflect durable changes in the canonical docs, not only in the plan text.
 
-## Plan Storage
-- Session-level execution plans can live in tool state and chat updates.
-- Durable execution strategy belongs in `docs/delivery/*`.
-- If a plan becomes important beyond one session, convert it into a repository document.
+## Closing A Completed Plan
+
+A plan is complete only when:
+- the acceptance criteria are met or explicitly deferred
+- the relevant docs are updated
+- required decisions are logged
+- remaining risks or follow-ups are documented
+- the next best prompt or next milestone is clear
+
+## Link To Decisions And Execution
+
+- Every formal plan must reference the canonical docs it relies on, especially `docs/specification.md`, `docs/delivery/execution.md`, and `docs/delivery/decision-log.md`.
+- If the work changes durable assumptions, add or update entries in `docs/delivery/decision-log.md`.
+- If implementation starts later, the plan must also reference the relevant implementation-entrypoint and quality-gate sections inside `docs/delivery/execution.md`.
